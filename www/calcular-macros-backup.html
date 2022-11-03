@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MTMDB99');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N8B9F8BBDE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-N8B9F8BBDE');
+  </script>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Guia dieta flexível</title>
+  <meta
+    content="O objetivo deste site é reunir informações relevantes a dieta flexível. Aqui você encontrará informações sobre o que é a dieta flexível, como calcular seus macros e informações sobre alimentos sadáveis para compor sua dieta."
+    name="description">
+  <meta content="dieta flexível, dieta, iifym, dieta flexivel, calculo de macros, calcular macronutrientes" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+  <link rel="manifest" href="assets/img/site.webmanifest">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  
+  <script>
+  
+   var metabolismoBasal = 0;
+   var gastoDiario = 0;
+   var carboidratoGlobal = 0;
+   var proteinaGlobal = 0;
+   var gorduraGlobal = 0;
+   var qtsProteinaCarb = 0;
+   var qtsGorduraProteinaCarb = 0;
+  
+   /* Function to calcule BMR.*/
+   function calcular() {
+	  var altura = document.getElementById('altura').value;
+	  var peso = document.getElementById('peso').value;
+	  var idade = document.getElementById('idade').value;
+	  var sexo = document.getElementById('sexo').value;
+	  
+	  if(altura == '' || peso == '' || idade == '') {
+		  document.getElementById('resultado').textContent = "Preencha todos os campos acima para descobrir seu metabolismo basal.";   
+	  } else{
+		  if (sexo == 'f') {	  
+			metabolismoBasal = Math.round(655 + (9.6 * peso) + (1.8 * altura) - ( 4.7 * idade ));
+   	  	  } else { //sexo == 'm'
+   	  		metabolismoBasal = Math.round(66 + ( 13.7 * peso ) + ( 5 * altura) - ( 6.8 * idade ));
+   	  	  }
+		  document.getElementById('resultado').textContent = "Seu metabolismo basal: " + metabolismoBasal + " calorias diárias.";
+		  document.getElementById('resultado-descricao').textContent = "O metabolismo basal é o mínimo de energia necessária para manter as funções do organismo em repouso, como os batimentos cardíacos, a pressão arterial, a respiração e a manutenção da temperatura corporal. A quantidade de calorias que você necessita para manter seu peso depende do quanto você se exercita."
+	      document.getElementById('rotina-div').style.display = "block";
+		  
+		  calcularGastoDiario();
+	  }
+	}
+   
+   /* Function to calculate calories burned today based on exercise routine.*/
+   function calcularGastoDiario() {
+	  var rotina = document.getElementById('rotina').value;
+	  var mutiplicador = 0;
+	  switch (rotina) {
+	    case '1': multiplicador = 1.2; break;
+	    case '2': multiplicador = 1.375; break;
+	    case '3': multiplicador = 1.55; break;
+	    case '4': multiplicador = 1.725; break;
+	    case '5': multiplicador = 1.9; break;
+	    
+	  }
+	  console.log('multiplicador='+multiplicador)
+	  gastoDiario = Math.round(metabolismoBasal * multiplicador);
+	  document.getElementById('gasto-diario').textContent = "Seu gasto calório diário é, em média, de " + gastoDiario + " calorias diárias.";
+	  calcularMacros();
+	}
+   
+   function calcularMacros(){
+	   var peso = document.getElementById('peso').value;
+	   var objetivo = document.getElementById('objetivo').value;
+	   var lbs = peso * 2.2;
+	   var proteina = 0;
+	   var gordura = 0;
+	   var carboidrato = 0;
+	   var calorias = gastoDiario;
+	   
+	   if (objetivo == "1") {
+		   console.log('objetivo = perder peso');
+	       // Perder peso
+	       calorias = calorias-500;
+	       proteina = Math.round(lbs * .85);
+	       gordura = Math.round(lbs * .35);
+	       carboidrato = Math.round((calorias-(proteina*4)-(gordura*9))/4);
+	   } else if (objetivo == "2") {
+		   console.log('objetivo = ganhar massa');
+	       // Ganhar Massa
+	       calorias = calorias+300;
+	       proteina = Math.round(lbs * .7);
+	       gordura = Math.round((calorias * .25)/9);
+	       carboidrato = Math.round((calorias-(proteina*4)-(gordura*9))/4);
+	   } else {
+	       // Manter peso
+	       console.log('objetivo = manter peso');
+	       proteina = Math.round(lbs * .9);
+	       gordura = Math.round(lbs * .40);
+	       carboidrato = Math.round((calorias-(proteina*4)-(gordura*9))/4);
+	   }
+	   
+	   carboidratoGlobal = carboidrato;
+	   proteinaGlobal = proteina;
+	   gorduraGlobal = gordura;
+	   
+	   document.getElementById('calorias').textContent = calorias;
+	   document.getElementById('proteina').textContent = proteina;
+	   document.getElementById('gordura').textContent = gordura;
+	   document.getElementById('carboidrato').textContent = carboidrato;
+   }
+   
+   function mostrarMacros(){
+   	 document.getElementById('resultado-div').style.display = "block";
+   	 document.getElementById('refeicoes-resultado-final').style.display = "block";
+   	 document.getElementById('cta-resultado-final').style.display = "block";
+   	 location.hash = "#resultado-div";
+   	 calcularMacros();
+   	 calcularDieta();
+   	
+   }
+   
+   function calcularDieta() {
+	   resetarDieta();
+	   calcularCarbos();
+	   calcularProteinas();
+	   calcularGorduras();
+   }
+   
+   function resetarDieta() {
+	   qtsProteinaCarb = 0;
+	   qtsGorduraProteinaCarb = 0;
+	   var refeicoes = ["cafe-da-manha", "lanche-da-manha", "almoco", "lanche-da-tarde", "jantar", "lanche-noturno"];
+	   
+	   for(var contador in refeicoes) {
+		   var tabela = document.getElementById(refeicoes[contador]);
+	       var numeroLinhas = tabela.rows.length;
+	       var totalLinhas = tabela.rows.length;
+	       for (var i = 1; i < totalLinhas; i++) {
+	    	   tabela.deleteRow(1);
+	       }
+	   }
+	   
+   }
+   
+   function calcularCarbos() {
+	   //refeicao, quantidade (em 100g), calorias, proteina, gordura, carboidrato
+	   var matrizAlimentos = 
+		   [["cafe-da-manha",	"Pão, trigo, forma, integral",			"1.00",	"253",	"9",	"4",	"50"],
+		   ["lanche-da-manha",	"Mamão, Papaia, cru",					"1.00",	"40",	"0",	"0",	"10"],
+		   ["almoco",			"Arroz, tipo 1, cozido",				"1.00",	"128",	"3",	"0",	"28"],
+		   ["almoco",			"Feijão, carioca, cozido",				"1.00",	"76",	"5",	"1",	"14"],
+		   ["lanche-da-tarde",	"Queijo, minas, frescal",				"1.00",	"264",	"17",	"20",	"3"],
+		   ["lanche-da-tarde",	"Iogurte, sabor morango",				"1.00",	"70",	"3",	"2",	"10"],
+		   ["lanche-noturno",   "Castanha-de-caju torrada, salgada",	"1.00", "570", "19", 	"46", 	"29"],
+		   ["jantar",			"Macarrão, molho bolognesa",			"1.00",	"120",	"5",	"1",	"23"]];
+
+		   						//pao de forma, mamao, arroz branco, feijao carioca, queijo minas, iogurte, castanha de caju, macarrao
+	  var porcentagemAlimentos = [0.25, 0.1043975, 0.23, 0.06795516667, 0.005, 0.1454, 0.029, 0.18];
+	   
+		   						
+		   						
+	  for(var contador in matrizAlimentos) {
+		  console.log(matrizAlimentos[contador]);
+		  var refeicao = matrizAlimentos[contador][0];
+		  var alimento = matrizAlimentos[contador][1];
+		  console.log("porcentagemAlimentos[contador]*carboidratoGlobal)/parseInt(matrizAlimentos[contador][6]");
+		  console.log("porcentagemAlimentos[contador]=",porcentagemAlimentos);
+		  console.log("carboidratoGlobal=",carboidratoGlobal);
+		  console.log("matrizAlimentos[contador][6]=",matrizAlimentos[contador][6]);
+		  var quantidade = (porcentagemAlimentos[contador]*carboidratoGlobal)/matrizAlimentos[contador][6];
+		  var caloriasAlimento = matrizAlimentos[contador][3]*quantidade;
+		  var proteina = matrizAlimentos[contador][4]*quantidade;
+		  var gordura = matrizAlimentos[contador][5]*quantidade;
+		  var carboidrato = matrizAlimentos[contador][6]*quantidade;
+		  qtsProteinaCarb += proteina;
+		  console.log("qtsGorduraProteinaCarb =+ gordura=",qtsGorduraProteinaCarb ,"=+", gordura);
+		  qtsGorduraProteinaCarb += gordura;
+		  quantidade = Math.round(quantidade*100) + "g";
+		  
+		  adicionarLinha(refeicao, alimento, quantidade, caloriasAlimento, proteina, carboidrato, gordura);		  
+	  }
+	   
+   }
+   
+   function calcularProteinas() {
+	   
+	   var matrizAlimentos = [["almoco",			"Frango, peito, sem pele, cozido",					"1.00",	"163",	"31",	"3",	"0"],
+		   ["jantar",			"Carne, bovina, patinho, sem gordura, grelhado",	"1.00",	"219",	"36",	"7",	"0"],
+		   ["cafe-da-manha",	"Ovo, de galinha, inteiro, cozido/10minutos",		"1.00",	"146",	"13",	"9",	"1"]];
+
+	   var porcentagemAlimentos = [0.334, 0.502, 0.165];
+	   
+	   for(var contador in matrizAlimentos) {
+			  console.log(matrizAlimentos[contador]);
+			  var refeicao = matrizAlimentos[contador][0];
+			  var alimento = matrizAlimentos[contador][1];
+			  
+			  var quantidade = (porcentagemAlimentos[contador]*(proteinaGlobal-qtsProteinaCarb))/matrizAlimentos[contador][4];
+			  
+			  var caloriasAlimento = matrizAlimentos[contador][3]*quantidade;
+			  var proteina = matrizAlimentos[contador][4]*quantidade;
+			  var gordura = matrizAlimentos[contador][5]*quantidade;
+			  var carboidrato = matrizAlimentos[contador][6]*quantidade;
+			  console.log("qtsGorduraProteinaCarb =+ gordura=",qtsGorduraProteinaCarb ,"=+", gordura);
+			  qtsGorduraProteinaCarb += gordura;
+			  quantidade = Math.round(quantidade*100) + "g";
+			  
+			  adicionarLinha(refeicao, alimento, quantidade, caloriasAlimento, proteina, carboidrato, gordura);		  
+		  }
+	   
+	   
+   }
+   
+   function calcularGorduras() {
+	   
+	   var matrizAlimentos = [["almoco","Azeite, de oliva, extra virgem",	"1.00",	"884",	"0",	"100",	"0"],
+		   ["jantar","Azeite, de oliva, extra virgem",	"1.00",	"884",	"0",	"100",	"0"]];
+	   
+	   for(var contador in matrizAlimentos) {
+		  var refeicao = matrizAlimentos[contador][0];
+		  var alimento = matrizAlimentos[contador][1];
+		  
+		  var quantidade = ((gorduraGlobal - qtsGorduraProteinaCarb)/2)/100;
+		  console.log("((gorduraGlobal - qtsGorduraProteinaCarb=",gorduraGlobal, "-", qtsGorduraProteinaCarb);
+		  
+		  var caloriasAlimento = matrizAlimentos[contador][3]*quantidade;
+		  var proteina = matrizAlimentos[contador][4]*quantidade;
+		  var gordura = matrizAlimentos[contador][5]*quantidade;
+		  var carboidrato = matrizAlimentos[contador][6]*quantidade;		  
+		  
+		  quantidade = Math.round(quantidade*100) + "g";
+		  
+		  adicionarLinha(refeicao, alimento, quantidade, caloriasAlimento, proteina, carboidrato, gordura);		 
+	   }
+   }
+   
+   function adicionarLinha(refeicao, alimento, quantidade, caloriasAlimento, proteina, carboidrato, gordura){
+	   var tabela = document.getElementById(refeicao);
+       var numeroLinhas = tabela.rows.length;
+       var linha = tabela.insertRow(numeroLinhas);
+       var celula1 = linha.insertCell(0);
+       var celula2 = linha.insertCell(1);   
+       var celula3 = linha.insertCell(2);
+       var celula4 = linha.insertCell(3);
+       var celula5 = linha.insertCell(4);
+       var celula6 = linha.insertCell(5);
+       celula1.innerHTML = alimento;
+       celula2.innerHTML = quantidade;
+       celula3.innerHTML = Math.round(caloriasAlimento);
+       celula4.innerHTML = Math.round(carboidrato);
+       celula5.innerHTML = Math.round(proteina);
+       celula6.innerHTML = Math.round(gordura);
+   }
+   
+   
+   
+  </script>
+
+  <!-- =======================================================
+  * Template Name: OnePage - v4.0.1
+  * Template URL: https://bootstrapmade.com/onepage-multipurpose-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MTMDB99"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <h1 class="logo"><a href="index.html">Guia dieta flexível</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+	  <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="/">Início</a></li>
+          <li><a class="nav-link scrollto active" href="calcular-macros.html">Calcular macros</a></li>
+          <li><a class="nav-link scrollto" href="build.html">Informações gerais</a></li>
+          <li><a class="nav-link scrollto" href="build.html">Perguntas frequentes</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->    
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg ml-1">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Quantas calorias você gasta por dia?</h2>
+        </div>      
+	      <div class="form-group row">	        
+			  <div class="col-xs-2">
+			    <label for="ex1">Sexo</label>
+			    <select class="form-select" onchange="calcular()" required aria-label="Selecione seu sexo" id="sexo">
+			      <option value="f">Feminino</option>
+			      <option value="m">Masculino</option>			      
+			    </select>
+			  </div>
+			  <div class="col-xs-3">
+			    <label for="ex2">Idade</label>
+				<input id="idade" type="number" class="form-control" placeholder="XX anos" oninput="calcular()" onchange="calcular()">
+			  </div>
+			  <div class="col-xs-4">
+			    <label>Altura (em cm)</label>
+				<input id="altura" type="number" class="form-control" placeholder="Altura" oninput="calcular()" onchange="calcular()">
+			  </div>
+			  <div class="col-xs-2">
+			    <label>Peso (em kg)</label>
+				<input id="peso" type="number" class="form-control" placeholder="Peso" oninput="calcular()" onchange="calcular()">
+			  </div>
+			  
+		  </div>
+	        
+	      
+		      <div class="form-group row div-bg">				  
+				  <div class="col-xs-2 mt-3">
+				    <h4 id="resultado" class="">Preencha todos os campos acima para descobrir seu metabolismo basal.</h4>
+				    <p id="resultado-descricao"></p>
+				  </div>			  
+				  
+				  <div id="rotina-div" class="col-xs-2" style="display: none">
+				    <label for="ex1">Selecione sua rotina de exercícios</label>
+				    <select class="form-select" onchange="calcularGastoDiario()" aria-label="Selecione sua rotina de exercícios" id="rotina">
+				      <option value="1">Sedentário - pouco ou nenhum exercício</option>
+				      <option value="2">Levemente ativo - Exercícios leves 1-3 dias por semana</option>
+				      <option value="3">Moderadamente ativo - Exercício moderado 3-5 dias por semana</option>
+				      <option value="4">Muito ativo - Exercícios ou esportes de 6 a 7 dias por semana</option>
+				      <option value="5">Extremamente ativo - Exercício pesado e trabalho físico</option>
+				    </select>
+				    
+				    <div class="col-xs-2 mt-3">
+				    	<h4 id="gasto-diario" class=""></h4>
+				    	<p>Logo, consumir essa quantidade de calorias diariamente fará com que você mantenha seu peso. Para emagrecer, você precisa consumir menos do que essa quantidade de calorias. Defina seu objetivo e descubra a quantidade de macronutrientes recomendados para que você tenha melhores resultados.</p>
+				  	</div>
+				  	
+				  	<div class="col-xs-2">
+				      <label for="ex1">Objetivo</label>
+				      <select class="form-select" onchange="calcular()" required aria-label="Selecione seu sexo" id="objetivo">
+				        <option value="1">Emagrecer</option>
+				        <option value="2">Ganhar Peso</option>
+				        <option value="3">Manter Peso</option>			      
+				      </select>
+				    </div>
+				  	
+				  	<button type="button" class="btn btn-primary mt-2" onclick="mostrarMacros();">Calcular macros</button>
+				  </div>
+			  </div>
+		  </div>
+	    </section><!-- End Sevices Section -->
+
+		<section id="counts" class="counts section-bg">
+	      <div  class="container mt-2" id="resultado-div" style="display: none;">
+			<div class="section-title">
+	          <h2>Abaixo o total de macronutrientes para seu objetivo</h2>
+	          <p>Observação: recalcule seus macros a cada 2 semanas</p>
+	        </div>   
+	        <div class="row justify-content-end">
+	
+	          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+	            <div class="count-box">
+	              <p>Diariamente</p>
+	              <span id="calorias"></span>
+	              <p>calorias</p>
+	            </div>
+	          </div>
+	
+	          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+	            <div class="count-box">
+	              <p>Carboidrato</p>
+	              <span  id="carboidrato"></span>
+	              <p>gramas</p>
+	            </div>
+	          </div>
+	
+	          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+	            <div class="count-box">
+	              <p>Proteína</p>
+	              <span id="proteina"></span>
+	              <p>gramas</p>
+	            </div>
+	          </div>
+	          
+	          <div class="col-lg-3 col-md-5 col-6 d-md-flex align-items-md-stretch">
+	            <div class="count-box">
+	              <p>Gordura</p>
+	              <span id="gordura"></span>
+	              <p>gramas</p>
+	            </div>
+	          </div>
+	
+	        </div>
+			
+	      </div>
+	    </section>
+	    
+	<!-- ======= Cta Section ======= -->
+    <section id="cta" class="cta">
+      <div class="container" data-aos="zoom-in">
+        <div class="text-center">
+          <h3>Já sei os macros que devo consumir, e agora?</h3>
+          <p>Bater os macronutrientes diariamente e comendo alimentos saudáveis cerca de 90% do tempo, seguramente vai trazer ótimos resultados. Caso você queira um plano mais detalhado, com estratégias semanais, estaremos aqui para te ajudar!</p>
+          <a class="cta-btn" onclick="alert('Obrigo por nos deixar saber! Ainda estamos aprimorando nossos serviços e em breve teremos novidades para você!')" href="#">Quero um plano personalizado!</a>
+        </div>
+      </div>
+    </section><!-- End Cta Section -->
+
+    <!-- ======= Frequently Asked Questions Section ======= -->
+    <section id="refeicoes-resultado-final" class="faq section-bg"  style="display: none">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Exemplo de cardápio para seus macro</h2>
+          <p>A tabela nutricional dos alimentos precisará ser consultada para você saber quantas gramas de carboidrato, gordura e proteína você consumirá em cada refeição. Pesar os alimentos também é importante. Evite medir "no olho" porque assim você pode comer uma quantidade maior ou menor do ideal.</p>
+        </div>
+
+        <div class="faq-list">
+          <ul>
+            <li data-aos="fade-up">
+              <i class="bx bx-food-menu icon-help"></i> <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-1">Café da manhã<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+                <table id="cafe-da-manha" class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col" style="width: 25%">Alimento</th>
+				      <th scope="col">Quantidade</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carboidrato</th>
+				      <th scope="col">Proteína</th>
+				      <th scope="col">Gordura</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+			      </tbody>
+			    </table>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="100">
+              <i class="bx bx-food-tag icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">Lanche da manhã<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-2" class="collapse show" data-bs-parent=".faq-list">
+                <table id="lanche-da-manha" class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col" style="width: 25%">Alimento</th>
+				      <th scope="col">Quantidade</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carboidrato</th>
+				      <th scope="col">Proteína</th>
+				      <th scope="col">Gordura</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+			      </tbody>
+			    </table>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="200">
+              <i class="bx bxs-food-menu icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">Almoço<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-3" class="collapse show" data-bs-parent=".faq-list">
+                <table id="almoco" class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col" style="width: 25%">Alimento</th>
+				      <th scope="col">Quantidade</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carboidrato</th>
+				      <th scope="col">Proteína</th>
+				      <th scope="col">Gordura</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+			      </tbody>
+			    </table>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="300">
+              <i class="bx bx-food-menu icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">Café da tarde<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-4" class="collapse show" data-bs-parent=".faq-list">
+                <table id="lanche-da-tarde" class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col" style="width: 25%">Alimento</th>
+				      <th scope="col">Quantidade</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carboidrato</th>
+				      <th scope="col">Proteína</th>
+				      <th scope="col">Gordura</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+			      </tbody>
+			    </table>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="400">
+              <i class="bx bx-food-tag icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">Jantar<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-5" class="collapse show" data-bs-parent=".faq-list">
+                <table id="jantar" class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col" style="width: 25%">Alimento</th>
+				      <th scope="col">Quantidade</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carboidrato</th>
+				      <th scope="col">Proteína</th>
+				      <th scope="col">Gordura</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+			      </tbody>
+			    </table>
+              </div>
+            </li>
+            
+            <li data-aos="fade-up" data-aos-delay="400">
+              <i class="bx bx-food-tag icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">Lanche noturno<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-5" class="collapse show" data-bs-parent=".faq-list">
+                <table id="lanche-noturno" class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col" style="width: 25%">Alimento</th>
+				      <th scope="col">Quantidade</th>
+				      <th scope="col">Calorias</th>
+				      <th scope="col">Carboidrato</th>
+				      <th scope="col">Proteína</th>
+				      <th scope="col">Gordura</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+			      </tbody>
+			    </table>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
+      </div>
+    </section><!-- End Frequently Asked Questions Section -->
+<!-- ======= Cta Section ======= -->
+    <section id="cta-resultado-final" class="cta" style="display: none">
+      <div class="container" data-aos="zoom-in">
+        <div class="text-center">
+          <h3>Dieta Flexível</h3>
+          <p>Como o próprio nome já diz, a dieta flexível é...flexível!</p>
+          <p>As refeições acima são exemplos para ajudar você entender a quantidade de alimentos para seu objetivo, mas você pode fazer substuições para alimentos que você prefere. O importante é ter como objetivo ingerir os macronutrientes diários recomendados, ou seja, bater os macros!</p>
+          <a class="cta-btn" onclick="alert('Obrigo por nos deixar saber! Ainda estamos aprimorando nossos serviços e em breve teremos novidades para você!')"href="#">Quero ajuda para saber como variar os alimentos!</a>
+        </div>
+      </div>
+    </section><!-- End Cta Section -->
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <h4>Links úteis</h4>
+          <div class="col-lg-2 col-md-6 footer-links">
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="/">Início</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-6 footer-links">
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="aviso-legal.html">Aviso legal</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="politica-privacidade.html">Política de privacidade</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="contato.html">Fale conosco</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+            <h6>Todas as informações contidas neste site são fornecidas apenas com propósitos educacionais. Elas não devem ser usadas para tratamento de quaisquer problemas de saúde ou doenças. <a href="aviso-legal.html">Clique aqui para ver a íntegra dos avisos legais e isenção de responsabilidades.</a></h6>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+
+      </div>
+    </div>
+  </footer><!-- End Footer -->	
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/purecounter/purecounter.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
